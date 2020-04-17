@@ -108,7 +108,7 @@ export default class SignaturePad extends Component {
   };
 
   _renderLoading = (args) => {
-
+    
   };
 
   onMessage = (event) => {
@@ -123,6 +123,7 @@ export default class SignaturePad extends Component {
                  onMessage={this.onMessage}
                  renderError={this._renderError}
                  renderLoading={this._renderLoading}
+                 startInLoadingState={true}
                  source={this.source}
                  javaScriptEnabled={true}
                  style={this.props.style}/>
