@@ -15,6 +15,7 @@ export default class SignaturePad extends Component {
   static propTypes = {
     onChange: PropTypes.func,
     onError: PropTypes.func,
+    onLoading: PropTypes.func,
     style: ViewPropTypes.style,
     penColor: PropTypes.string,
     dataURL: PropTypes.string
@@ -107,10 +108,6 @@ export default class SignaturePad extends Component {
     this.props.onError({details: args});
   };
 
-  _renderLoading = (args) => {
-    
-  };
-
   onMessage = (event) => {
     var base64DataUrl = JSON.parse(event.nativeEvent.data);
     this._bridged_finishedStroke(base64DataUrl);
@@ -122,7 +119,7 @@ export default class SignaturePad extends Component {
                  onNavigationStateChange={this._onNavigationChange}
                  onMessage={this.onMessage}
                  renderError={this._renderError}
-                 renderLoading={this._renderLoading}
+                 renderLoading={this.props.onLoading}
                  startInLoadingState={true}
                  source={this.source}
                  javaScriptEnabled={true}
@@ -130,4 +127,3 @@ export default class SignaturePad extends Component {
     )
   };
 }
-
