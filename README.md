@@ -10,6 +10,7 @@ React Native wrapper around @[szimek's](https://github.com/szimek) HTML5 Canvas 
 - Tested with RN 0.20
 - Can easily be rotated using the "transform" style
 - Generates a base64 encoded png image of the signature
+- **Forked and fixed for ActivityIndicator from props**
 
 ## Demo
 
@@ -25,7 +26,7 @@ $ yarn add react-native-signature-pad
 
 ```js
 import React, {Component} from 'react';
-import {View} from 'react-native';
+import {View, ActivityIndicator, StyleSheet} from 'react-native';
 import SignaturePad from 'react-native-signature-pad';
 
 export default class Demo extends Component {
@@ -34,6 +35,7 @@ export default class Demo extends Component {
       <View style={{flex: 1}}>
           <SignaturePad onError={this._signaturePadError}
                         onChange={this._signaturePadChange}
+                        onLoading={() => <ActivityIndicator style={styles.loadingIndicator} />}
                         style={{flex: 1, backgroundColor: 'white'}}/>
       </View>
     )
@@ -46,5 +48,25 @@ export default class Demo extends Component {
   _signaturePadChange = ({base64DataUrl}) => {
     console.log("Got new signature: " + base64DataUrl);
   };
+  
 }
+
+const styles = StyleSheet.create({
+  loadingIndicator: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  signaturePad: {
+    flex: 1,
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderRadius: 6,
+    borderColor: '#cecece'
+  }
+});
 ```
