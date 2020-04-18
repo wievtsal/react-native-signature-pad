@@ -11,6 +11,7 @@ React Native wrapper around @[szimek's](https://github.com/szimek) HTML5 Canvas 
 - Can easily be rotated using the "transform" style
 - Generates a base64 encoded png image of the signature
 - **Forked and fixed for ActivityIndicator from props**
+- **Added Clean button**
 
 ## Demo
 
@@ -26,32 +27,58 @@ $ yarn add wievtsal/react-native-signature-pad
 
 ```js
 import React, {Component} from 'react';
-import {View, ActivityIndicator, StyleSheet} from 'react-native';
+import {View, ActivityIndicator, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import SignaturePad from 'react-native-signature-pad';
 
-export default class Demo extends Component {
-  render = () => {
-    return (
-      <View style={{flex: 1}}>
-          <SignaturePad onError={this._signaturePadError}
-                        onChange={this._signaturePadChange}
-                        onLoading={() => <ActivityIndicator style={styles.loadingIndicator} />}
-                        style={{flex: 1, backgroundColor: 'white'}}/>
-      </View>
-    )
+export default class Join extends Component {
+  state = {
+    signaturePadKey: 0
   };
 
-  _signaturePadError = (error) => {
+  render = () => {
+    return (
+      <View style={styles.conteiner}>
+        {this.createSignaturePad()}
+        <TouchableOpacity onPress={this.cleanButtonAction} style={styles.btn}>
+          <Text>Clean</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  _signaturePadError = error => {
     console.error(error);
   };
 
   _signaturePadChange = ({base64DataUrl}) => {
-    console.log("Got new signature: " + base64DataUrl);
+    console.log('Got new signature: ' + base64DataUrl);
   };
-  
+
+  createSignaturePad = () => {
+    return (
+      <View style={{height: 200}}>
+        <SignaturePad
+          key={this.state.signaturePadKey}
+          onError={this._signaturePadError}
+          onChange={this._signaturePadChange}
+          onLoading={() => <ActivityIndicator style={styles.loadingIndicator} />}
+          style={styles.signaturePad}
+        />
+      </View>
+    );
+  };
+
+  cleanButtonAction = () => {
+    this.setState({signaturePadKey: this.state.signaturePadKey + 1, signature: null});
+  };
 }
 
 const styles = StyleSheet.create({
+  conteiner: {
+    flex: 1,
+    padding: 15,
+    marginTop: 45
+  },
   loadingIndicator: {
     position: 'absolute',
     left: 0,
@@ -67,6 +94,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 6,
     borderColor: '#cecece'
+  },
+  btn: {
+    padding: 10,
+    backgroundColor: '#cecece',
+    width: 200,
+    borderRadius: 6,
+    alignSelf: 'center',
+    marginTop: 15,
+    alignItems: 'center'
   }
 });
 ```
